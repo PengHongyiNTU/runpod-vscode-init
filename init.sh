@@ -1,37 +1,39 @@
-#!/bin/bash 
-# A simple VSCode Tunnel setup script for Runpod instances
-# workspace dir persists
-# Create bin directory
+#!/bin/bash
+
+# 1. Define Paths
 INSTALL_DIR="/workspace/bin"
-DOWNLOAD_DIR="/workspace/downloads"
-mkdir -p $INSTALL_DIR
-mkdir -p $DOWNLOAD_DIR
+mkdir -p "$INSTALL_DIR"
 
-
-# Check if VS Code CLI already exists
-if [ ! -f $INSTALL_DIR/code ]; then
-    echo "VS Code CLI not found. Downloading..."
-    # Download the VS Code CLI
-    wget -O $DOWNLOAD_DIR/vscode-cli.tar.gz "https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64"
-    # Extract the downloaded file
-    tar -xzf $DOWNLOAD_DIR/vscode-cli.tar.gz -C $INSTALL_DIR
-    chmod +x $INSTALL_DIR/code
-    echo "VS Code CLI downloaded and installed."
+# 2. Install VS Code CLI (Persistent)
+if [ ! -f "$INSTALL_DIR/code" ]; then
+    echo "⬇️ Downloading VS Code CLI..."
+    curl -Lk 'https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64' | tar -xz --no-same-owner -C "$INSTALL_DIR"
+    chmod +x "$INSTALL_DIR/code"
 else
-    echo "VS Code CLI already exists."
+    echo "✅ VS Code CLI already exists."
 fi
 
-
-# Add VS Code CLI to PATH if not already present
-if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
-    echo "Adding VS Code CLI to PATH."
-    export PATH="$INSTALL_DIR:$PATH"
-    # Add to .bashrc for persistence
-    echo 'export PATH="'"$INSTALL_DIR"':$PATH"' >> ~/.bashrc
+# 3. Install nvitop (GPU Monitor)
+if ! command -v nvitop &> /dev/null; then
+    echo "⬇️ Installing nvitop..."
+    pip install nvitop --break-system-packages
 else
-    echo "VS Code CLI is already in PATH."
+    echo "✅ nvitop already installed."
 fi
 
-echo "Starting VS Code Tunnel..."
-# Start VS Code Tunnel
-code tunnel
+# 4. Update .bashrc (Avoid Duplicates)
+if ! grep -q "$INSTALL_DIR" ~/.bashrc; then
+    echo "📝 Adding paths to .bashrc..."
+    echo "export PATH=\"$INSTALL_DIR:\$PATH\"" >> ~/.bashrc
+    echo "export HF_HOME=\"/workspace/hf_cache\"" >> ~/.bashrc
+fi
+
+echo "------------------------------------------------"
+echo "🎉 Setup complete!"
+echo "To activate immediately, run: source ~/.bashrc"
+echo "Or I can restart the shell for you now."
+echo "------------------------------------------------"
+
+# 5. The Magic Trick: Automatically refresh the shell
+# This replaces the current shell process with a fresh one that has the new PATH
+exec bash
