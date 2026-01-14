@@ -12,7 +12,7 @@ mkdir -p $DOWNLOAD_DIR
 if [ ! -f $INSTALL_DIR/code ]; then
     echo "VS Code CLI not found. Downloading..."
     # Download the VS Code CLI
-    wget -O $DOWNLOAD_DIR/vscode-cli.tar.gz "https://code.visualstudio.com/sha/download?build=stable&os=linux-x64"
+    wget -O $DOWNLOAD_DIR/vscode-cli.tar.gz "https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64"
     # Extract the downloaded file
     tar -xzf $DOWNLOAD_DIR/vscode-cli.tar.gz -C $INSTALL_DIR
     chmod +x $INSTALL_DIR/code
