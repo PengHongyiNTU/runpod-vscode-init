@@ -30,8 +30,7 @@ fi
 
 echo "------------------------------------------------"
 echo "🎉 Setup complete!"
-echo "To activate immediately, run: source ~/.bashrc"
-echo "Or I can restart the shell for you now."
+echo "Refreshing your shell to apply changes..."
 echo "------------------------------------------------"
 
 # 5. The Magic Trick: Automatically refresh the shell
