@@ -43,7 +43,7 @@ if [[ ! -x "$INSTALL_DIR/code" ]]; then
   echo "⬇️ Downloading VS Code CLI..."
   tmpdir="$(mktemp -d)"
   # NOTE: you might need to change os=cli-linux-x64 depending on your base image.
-  curl -L 'https://code.visualstudio.com/sha/download?build=stable&os=cli-linux-x64' \
+  curl -L 'https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64' \
     | tar -xz -C "$tmpdir"
 
   # Find the binary robustly
