@@ -28,7 +28,7 @@ export WANDB_DIR="$WORKSPACE_DIR/wandb"
 export XDG_CACHE_HOME="$WORKSPACE_DIR/xdg_cache"
 export TRITON_CACHE_DIR="$WORKSPACE_DIR/triton_cache"
 
-、mkdir -p \
+mkdir -p \
   "$INSTALL_DIR" \
   "$HF_HOME" "$HUGGINGFACE_HUB_CACHE" "$HF_DATASETS_CACHE" \
   "$PIP_CACHE_DIR" "$UV_CACHE_DIR" "$RAY_TMPDIR" \
